@@ -6,7 +6,7 @@ A responsive React food journal with a whimsical paper-inspired design, recipe c
 
 Run `npm install`, then `npm run dev`. Run `npm run build` to generate the GitHub Pages site in `docs/`.
 
-The existing repository base path is configured in `vite.config.js`. Update it if the hosting path changes.
+The custom domain `marialamarcacooking.com` uses the root base path `/` in `vite.config.js`. `public/CNAME` is copied into `docs/CNAME` on every build to preserve the GitHub Pages custom domain. GitHub Pages should publish from the `docs/` folder.
 
 ## Content and publishing
 
