@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Authentication service credentials and local state
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+.wrangler/

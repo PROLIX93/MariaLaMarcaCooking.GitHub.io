@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Maria’s Kitchen Notebook</title>
+  <script>window.CMS_MANUAL_INIT = true;</script>
+</head>
+<body>
+  <p id="status" style="font:16px/1.6 system-ui;max-width:600px;margin:60px auto;padding:20px">Opening the kitchen notebook…</p>
+  <script src="https://unpkg.com/decap-cms@3.10.0/dist/decap-cms.js"></script>
+  <script>
+    fetch('/admin/settings.json').then(response => {
+      if (!response.ok) throw new Error('Could not load editor settings.');
+      return response.json();
+    }).then(settings => {
+      const status = document.getElementById('status');
+      if (!settings.authBaseUrl) {
+        status.textContent = 'The kitchen notebook needs its GitHub sign-in service connected. Follow the setup instructions in ADMIN_SETUP.md in the website repository. Publishing is unavailable until setup is complete.';
+        return;
+      }
+      const url = new URL(settings.authBaseUrl);
+      if (url.protocol !== 'https:') throw new Error('Sign-in requires HTTPS.');
+      if (!window.CMS) throw new Error('The editor could not load. Check your internet connection and reload.');
+      window.CMS.init({ config: { backend: { base_url: url.origin, auth_endpoint: 'auth' } } });
+      status.remove();
+    }).catch(error => { document.getElementById('status').textContent = error.message; });
+  </script>
+</body>
+</html>

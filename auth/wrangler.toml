@@ -1,0 +1,13 @@
+name = "maria-kitchen-auth"
+main = "worker.mjs"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[vars]
+SITE_ORIGIN = "https://marialamarcacooking.com"
+GITHUB_REPO = "PROLIX93/MariaLaMarcaCooking.GitHub.io"
+# Set these in Cloudflare before enabling login:
+# AUTH_ORIGIN = "https://maria-kitchen-auth.YOUR-SUBDOMAIN.workers.dev"
+# ADMIN_GITHUB_IDS = "NUMERIC_GITHUB_ID"
+# GITHUB_CLIENT_ID = "YOUR_OAUTH_CLIENT_ID"
+# GITHUB_CLIENT_SECRET must be a Worker secret, never a variable in this file.

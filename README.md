@@ -1,17 +1,19 @@
 # Maria LaMarca Cooking
 
-A responsive React food journal with a whimsical paper-inspired design, recipe categories, search, article reading views, and a browser-local post editor.
+A responsive React food journal with category filters, search, article views, and a Decap CMS editor at `/admin/`.
 
 ## Development
 
-Run `npm install`, then `npm run dev`. Run `npm run build` to generate the GitHub Pages site in `docs/`.
+Run `npm install`, then `npm run dev`. Run `npm run build` to generate the site in `docs/`. The custom domain uses the root base path `/`; `public/CNAME` preserves the domain on each build.
 
-The custom domain `marialamarcacooking.com` uses the root base path `/` in `vite.config.js`. `public/CNAME` is copied into `docs/CNAME` on every build to preserve the GitHub Pages custom domain. GitHub Pages should publish from the `docs/` folder.
+## Publishing and accounts
 
-## Content and publishing
+See [ADMIN_SETUP.md](ADMIN_SETUP.md) to configure GitHub sign-in, the initial approved owner, and GitHub Actions deployment. Authentication requires deploying the included Worker and registering an OAuth app. Login is disabled until configured.
 
-The starting journal entries and introduction are illustrative content in `src/App.jsx`. Replace them with Maria’s own writing before launching.
+Posts are shared files in `content/posts/`, edited through the CMS and deployed automatically after commits to `main`. Photos upload to `public/uploads/`. Local browser storage is no longer the source of posts. The starting posts and introduction remain illustrative content to replace before launch.
 
-“Write a kitchen note” adds entries to localStorage in the current browser. This is a prototype editor, with no authentication or shared publishing. To publish daily posts for all visitors, connect a CMS or backend and protect author access. Browser-local entries should not be treated as a permanent content archive.
+Food photographs initially load from Unsplash, fonts from Google Fonts, and the editor from a pinned Decap CDN release. These require network access.
 
-Food photographs are loaded from Unsplash and fonts from Google Fonts, requiring network access. For a self-contained deployment, replace these with local assets.
+## Verification
+
+`npm run build` checks the production bundle. `node --test auth/worker.test.mjs` verifies authentication restrictions with mocked GitHub responses. Live OAuth and publishing require the account setup described above.
