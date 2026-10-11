@@ -52,9 +52,11 @@
           ]
         },
         {
-          "label": "Cover photo",
+          "label": "Cover photo (optional)",
           "name": "image",
-          "widget": "image"
+          "widget": "image",
+          "required": false,
+          "hint": "Leave empty for a post without a photo."
         },
         {
           "label": "Short introduction",
