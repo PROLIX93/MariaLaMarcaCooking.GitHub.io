@@ -16,4 +16,4 @@ Food photographs initially load from Unsplash, fonts from Google Fonts, and the 
 
 ## Verification
 
-`npm run build` checks the production bundle. `node --test auth/worker.test.mjs` verifies authentication restrictions with mocked GitHub responses. Live OAuth and publishing require the account setup described above.
+`npm run build` checks the production bundle. `node --test auth/worker.test.mjs auth/admin.test.mjs` verifies authentication restrictions with mocked GitHub responses and the editor initialization flow. The editor explicitly loads `public/admin/config.json` and `settings.json`. Live OAuth and publishing require the account setup described above.

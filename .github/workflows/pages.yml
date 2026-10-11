@@ -20,7 +20,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: node --test auth/worker.test.mjs
+      - run: node --test auth/worker.test.mjs auth/admin.test.mjs
       - uses: actions/configure-pages@v5
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
