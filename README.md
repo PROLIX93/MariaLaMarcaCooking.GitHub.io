@@ -1,16 +1,17 @@
-# React + Vite
+# Maria LaMarca Cooking
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive React food journal with a whimsical paper-inspired design, recipe categories, search, article reading views, and a browser-local post editor.
 
-Currently, two official plugins are available:
+## Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Run `npm install`, then `npm run dev`. Run `npm run build` to generate the GitHub Pages site in `docs/`.
 
-## React Compiler
+The existing repository base path is configured in `vite.config.js`. Update it if the hosting path changes.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Content and publishing
 
-## Expanding the ESLint configuration
+The starting journal entries and introduction are illustrative content in `src/App.jsx`. Replace them with Maria’s own writing before launching.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+“Write a kitchen note” adds entries to localStorage in the current browser. This is a prototype editor, with no authentication or shared publishing. To publish daily posts for all visitors, connect a CMS or backend and protect author access. Browser-local entries should not be treated as a permanent content archive.
+
+Food photographs are loaded from Unsplash and fonts from Google Fonts, requiring network access. For a self-contained deployment, replace these with local assets.

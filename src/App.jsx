@@ -1,122 +1,38 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
+const photo = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1200&q=85`
+const initialPosts = [
+  { id: 1, title: 'A little flour, a lot of love.', category: 'Recipes', date: '2026-10-11', image: photo('photo-1551183053-bf91a1d81141'), excerpt: 'Sunday afternoons are for slow cooking, flour-dusted countertops, and homemade pasta. Come pull up a chair.', body: 'There’s something lovely about making a meal with your hands. Today, we’re slowing down and making fresh pasta.\n\nFor a small batch, start with 200g of flour and two large eggs. Make a well in the flour, add the eggs, and gently bring everything together with a fork. Knead until smooth, then cover and rest for 30 minutes.\n\nRoll the dough thin, cut into ribbons, and cook in well-salted boiling water until tender. Toss with your favorite sauce and a little pasta water. Finish with Parmesan, fresh basil, and a seat at the table.', time: '5 min read' },
+  { id: 2, title: 'The kind of cake that feels like a hug', category: 'Something sweet', date: '2026-10-09', image: photo('photo-1464305795204-6f5bbfc7fb81'), excerpt: 'A buttery little cake, a handful of berries, and absolutely no special occasion required.', body: 'Today’s kitchen experiment: a simple berry cake for the middle of the week. I’m testing a softer crumb with yogurt and a little lemon zest.\n\nMy favorite part? The berries sink into the batter and leave little pockets of jam. Next time, I’ll try raspberries and a sprinkle of crunchy sugar on top. A work in progress, and a very delicious one.', time: '4 min read' },
+  { id: 3, title: 'A small ritual: bread on the counter', category: 'Kitchen notes', date: '2026-10-07', image: photo('photo-1509440159596-0249088772ff'), excerpt: 'On patience, imperfect loaves, and finding a little magic in the everyday.', body: 'A loaf cooling on the counter makes the whole house feel different. Today’s loaf had a slightly lopsided shape and a beautiful, crackly crust.\n\nI’m keeping notes on proofing time as the kitchen gets cooler. A slower rise seems to give the dough more flavor. The lesson for today: give things the time they need.', time: '3 min read' },
+  { id: 4, title: 'Whatever’s-in-the-garden tomatoes', category: 'Recipes', date: '2026-10-05', image: photo('photo-1546094096-0df4bcaaa337'), excerpt: 'Good olive oil, a pinch of salt, and the last little taste of summer.', body: 'Slice your ripest tomatoes and arrange them on a wide plate. Add torn basil, a generous drizzle of olive oil, and flaky salt.\n\nLet everything sit for ten minutes so the juices mingle. Serve with crusty bread to catch every last drop. Sometimes the simplest things are the ones worth writing down.', time: '2 min read' },
+]
+const categories = ['All the good stuff', 'Recipes', 'Kitchen notes', 'Something sweet']
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+  const [posts, setPosts] = useState(() => { try { const saved = JSON.parse(localStorage.getItem('maria-kitchen-posts')); return Array.isArray(saved) && saved.length ? saved : initialPosts } catch { return initialPosts } })
+  const [category, setCategory] = useState(categories[0])
+  const [query, setQuery] = useState('')
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [selected, setSelected] = useState(null)
+  const [editor, setEditor] = useState(false)
+  const [storageError, setStorageError] = useState(false)
+  const dialog = useRef(null)
+  useEffect(() => { try { localStorage.setItem('maria-kitchen-posts', JSON.stringify(posts)); setStorageError(false) } catch { setStorageError(true) } }, [posts])
+  useEffect(() => { if (selected || editor) dialog.current?.showModal(); else dialog.current?.close() }, [selected, editor])
+  const filtered = posts.filter(p => (category === categories[0] || p.category === category) && `${p.title} ${p.excerpt}`.toLowerCase().includes(query.toLowerCase()))
+  function publish(e) { e.preventDefault(); const data = new FormData(e.currentTarget); const body = data.get('body').trim(); setPosts([{ id: Date.now(), title: data.get('title').trim(), category: data.get('category'), date: new Date().toLocaleDateString('en-CA'), excerpt: body.slice(0, 150), body, image: data.get('image').trim() || initialPosts[0].image, time: `${Math.max(1, Math.ceil(body.split(/\s+/).length / 200))} min read` }, ...posts]); setEditor(false); setCategory(categories[0]); setQuery(''); document.getElementById('journal').scrollIntoView({ behavior: 'smooth' }) }
+  const date = value => new Date(`${value}T12:00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  return <>
+    <div className="announcement">A little messy. A little magical. Always made with love. <span>✧</span></div>
+    <header><a className="brand" href="#" aria-label="Maria LaMarca Cooking home">maria lamarca<span>COOKING & A LITTLE EVERYDAY MAGIC</span></a><nav aria-label="Main navigation"><a href="#journal" onClick={() => setCategory(categories[0])}>The journal</a><a href="#journal" onClick={() => setCategory('Recipes')}>Recipes</a><a href="#about">Meet Maria <span>♡</span></a></nav><button className="search-toggle" aria-label="Search posts" onClick={() => setSearchOpen(!searchOpen)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 5 5"/></svg></button></header>
+    <main>
+      <section className="hero"><div className="hero-copy"><div className="eyebrow">FROM MY KITCHEN, WITH LOVE <span>✳</span></div><h1>A pinch of joy.<br/>A spoonful of <em>magic.</em></h1><p>Recipes, little experiments, and everyday stories<br className="desktop"/> from a kitchen that’s always making something.</p><a className="button" href="#journal">See what’s cooking <span>↗</span></a><div className="handwritten">Good food. Happy hearts. <span>⤴</span></div></div><div className="hero-photo"><img src={initialPosts[0].image} alt="Fresh pasta with tomatoes and basil"/><span className="photo-note">made with love<br/><b>…and extra basil ♡</b></span><span className="round-stamp">IN SEASON<br/><strong>made<br/>slowly</strong><br/>SAVORED ALWAYS</span></div><span className="hero-spark" aria-hidden="true">✧</span></section>
+      <div className="ribbon"><span>✳</span> A kitchen journal <span>✳</span> A little inspiration <span>✳</span> Something delicious <span>✳</span> Room at the table <span>✳</span></div>
+      <section className="journal" id="journal"><div className="section-heading"><div><span className="eyebrow">FRESH FROM THE COUNTER</span><h2>Lately in the kitchen <span>↴</span></h2></div><p>A few things I’ve been making,<br/>loving, and figuring out along the way.</p></div><div className="journal-controls"><div className="filters">{categories.map(c => <button key={c} className={category === c ? 'active' : ''} onClick={() => setCategory(c)}>{c}</button>)}</div><button className="new-post" onClick={() => setEditor(true)}>＋ Write a kitchen note</button></div>{searchOpen && <label className="search-field">Find something delicious<input autoFocus value={query} onChange={e => setQuery(e.target.value)} placeholder="Search the journal…" type="search"/></label>}<div className="posts">{filtered.map((post, i) => <article key={post.id} className={i === 0 ? 'post featured' : 'post'}><button className="post-image" onClick={() => setSelected(post)} aria-label={`Read ${post.title}`}><img src={post.image} alt={post.title} loading="lazy"/><span className="category-label">{post.category}</span>{i === 0 && <span className="latest-label">the latest ♡</span>}</button><div className="post-content"><div className="post-meta">{date(post.date)} <span>·</span> {post.time}</div><button className="title-button" onClick={() => setSelected(post)}><h3>{post.title}</h3></button><p>{post.excerpt}</p><button className="read-link" onClick={() => setSelected(post)}>Pull up a chair <span>↗</span></button></div></article>)}</div>{!filtered.length && <p className="empty">Nothing on the counter just yet. Try another category or search.</p>}</section>
+      <section className="about" id="about"><div className="about-art" aria-hidden="true">♡<span>there’s always<br/>room for one more</span></div><div><span className="eyebrow">HELLO, I’M MARIA</span><h2>Welcome to my little<br/>corner of the kitchen.</h2><p>This is a place for the things we make, the recipes we keep, and the happy little accidents along the way. Grab a cup of something warm and stay a while.</p><span className="handwritten">Let’s make something lovely. ♡</span></div></section>
+    </main><footer><a className="brand" href="#">maria lamarca<span>A LITTLE EVERYDAY MAGIC</span></a><p>Made with love, and probably a little flour.</p><button onClick={() => setEditor(true)}>Kitchen notebook ↗</button><small>Sample journal content · Make this space your own.</small></footer>
+    <dialog ref={dialog} onCancel={() => { setSelected(null); setEditor(false) }} onClick={e => { if (e.target === e.currentTarget) { setSelected(null); setEditor(false) } }}><button className="close" aria-label="Close" onClick={() => { setSelected(null); setEditor(false) }}>×</button>{editor ? <form onSubmit={publish}><span className="eyebrow">YOUR KITCHEN NOTEBOOK</span><h2>What’s cooking today?</h2><p className="editor-notice">Posts are saved in this browser only. Shared publishing will need a connected content management system.</p><label>Post title<input name="title" required maxLength="120" placeholder="A delicious little discovery…"/></label><label>Category<select name="category">{categories.slice(1).map(c => <option key={c}>{c}</option>)}</select></label><label>Photo URL (optional)<input name="image" type="url" placeholder="https://…"/></label><label>Your story<textarea name="body" required rows="7" placeholder="Today in the kitchen…"/></label>{storageError && <p role="alert">Browser storage is unavailable. This note will last only until you reload.</p>}<button className="button" type="submit">Add to my journal ↗</button></form> : selected && <article className="reading"><img src={selected.image} alt={selected.title}/><span className="eyebrow">{selected.category} · {date(selected.date)}</span><h2>{selected.title}</h2>{selected.body.split('\n\n').map((p, i) => <p key={i}>{p}</p>)}<span className="handwritten">With love, Maria ♡</span></article>}</dialog>
+  </>
 }
-
 export default App
